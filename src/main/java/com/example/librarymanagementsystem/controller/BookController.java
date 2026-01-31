@@ -1,7 +1,7 @@
 package com.example.librarymanagementsystem.controller;
 
-import com.example.librarymanagementsystem.entity.Book;
-import com.example.librarymanagementsystem.entity.Category;
+import com.example.librarymanagementsystem.model.Book;
+import com.example.librarymanagementsystem.model.Category;
 import com.example.librarymanagementsystem.repository.BookRepository;
 import com.example.librarymanagementsystem.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;

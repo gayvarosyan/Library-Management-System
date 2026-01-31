@@ -1,8 +1,8 @@
 package com.example.librarymanagementsystem.config;
 
-import com.example.librarymanagementsystem.entity.Book;
-import com.example.librarymanagementsystem.entity.Category;
-import com.example.librarymanagementsystem.entity.Member;
+import com.example.librarymanagementsystem.model.Book;
+import com.example.librarymanagementsystem.model.Category;
+import com.example.librarymanagementsystem.model.Member;
 import com.example.librarymanagementsystem.repository.BookRepository;
 import com.example.librarymanagementsystem.repository.CategoryRepository;
 import com.example.librarymanagementsystem.repository.MemberRepository;

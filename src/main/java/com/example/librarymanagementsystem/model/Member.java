@@ -1,4 +1,4 @@
-package com.example.librarymanagementsystem.entity;
+package com.example.librarymanagementsystem.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

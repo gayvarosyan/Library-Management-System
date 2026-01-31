@@ -1,6 +1,6 @@
 package com.example.librarymanagementsystem.controller;
 
-import com.example.librarymanagementsystem.entity.Member;
+import com.example.librarymanagementsystem.model.Member;
 import com.example.librarymanagementsystem.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
