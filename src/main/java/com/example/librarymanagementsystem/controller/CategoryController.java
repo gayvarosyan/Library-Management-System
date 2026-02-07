@@ -1,7 +1,7 @@
 package com.example.librarymanagementsystem.controller;
 
-import com.example.librarymanagementsystem.repository.CategoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.librarymanagementsystem.service.CategoryService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/categories")
+@RequiredArgsConstructor
 public class CategoryController {
-    
-    @Autowired
-    private CategoryRepository categoryRepository;
+
+    private final CategoryService categoryService;
     
     @GetMapping
     public String listCategories(Model model) {
-        model.addAttribute("categories", categoryRepository.findAll());
+        model.addAllAttributes(categoryService.getListCategoriesModel());
         return "categories";
     }
 }

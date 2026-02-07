@@ -3,29 +3,57 @@ package com.example.librarymanagementsystem.config;
 import com.example.librarymanagementsystem.model.Book;
 import com.example.librarymanagementsystem.model.Category;
 import com.example.librarymanagementsystem.model.Member;
+import com.example.librarymanagementsystem.model.Role;
+import com.example.librarymanagementsystem.model.User;
 import com.example.librarymanagementsystem.repository.BookRepository;
 import com.example.librarymanagementsystem.repository.CategoryRepository;
 import com.example.librarymanagementsystem.repository.MemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.librarymanagementsystem.repository.RoleRepository;
+import com.example.librarymanagementsystem.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
 @Component
+@RequiredArgsConstructor
 public class DataInitializer implements CommandLineRunner {
     
-    @Autowired
-    private CategoryRepository categoryRepository;
-    
-    @Autowired
-    private BookRepository bookRepository;
-    
-    @Autowired
-    private MemberRepository memberRepository;
+    private final CategoryRepository categoryRepository;
+    private final BookRepository bookRepository;
+    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
     
     @Override
     public void run(String... args) throws Exception {
+        if (roleRepository.count() == 0) {
+            Role adminRole = new Role();
+            adminRole.setName("ADMIN");
+            adminRole = roleRepository.save(adminRole);
+            
+            Role userRole = new Role();
+            userRole.setName("USER");
+            userRole = roleRepository.save(userRole);
+            
+            User admin = new User();
+            admin.setUsername("admin");
+            admin.setPassword(passwordEncoder.encode("admin123"));
+            admin.setEnabled(true);
+            admin.getRoles().add(adminRole);
+            userRepository.save(admin);
+            
+            User user = new User();
+            user.setUsername("user");
+            user.setPassword(passwordEncoder.encode("user123"));
+            user.setEnabled(true);
+            user.getRoles().add(userRole);
+            userRepository.save(user);
+        }
+        
         if (categoryRepository.count() == 0) {
             Category programming = new Category();
             programming.setName("Programming");
@@ -86,3 +114,4 @@ public class DataInitializer implements CommandLineRunner {
         }
     }
 }
+

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,7 +33,13 @@
         
         nav {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .nav-links {
+            display: flex;
             gap: 1rem;
         }
         
@@ -47,6 +53,32 @@
         
         nav a:hover, nav a.active {
             background-color: #34495e;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: white;
+        }
+        
+        .user-info span {
+            font-size: 0.9rem;
+        }
+        
+        .btn-logout {
+            background-color: #e74c3c;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-logout:hover {
+            background-color: #c0392b;
         }
         
         .content {
@@ -108,10 +140,18 @@
     <header>
         <div class="container">
             <nav>
-                <a href="/" class="active">Home</a>
-                <a href="/books">Books</a>
-                <a href="/categories">Categories</a>
-                <a href="/members">Members</a>
+                <div class="nav-links">
+                    <a href="/" class="active">Home</a>
+                    <a href="/books">Books</a>
+                    <a href="/categories">Categories</a>
+                    <a href="/members">Members</a>
+                </div>
+                <div class="user-info" sec:authorize="isAuthenticated()">
+                    <span th:text="'Welcome, ' + ${#authentication.name}"></span>
+                    <form th:action="@{/logout}" method="post" style="display: inline;">
+                        <button type="submit" class="btn-logout">Logout</button>
+                    </form>
+                </div>
             </nav>
         </div>
     </header>
@@ -128,3 +168,5 @@
     </div>
 </body>
 </html>
+
+

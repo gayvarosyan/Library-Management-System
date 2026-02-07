@@ -17,3 +17,5 @@ INSERT INTO member_book (member_id, book_id, borrowed_date) VALUES
 (1, 2, '2024-01-15'),
 (1, 3, '2024-02-01'),
 (2, 1, '2024-02-10');
+
+

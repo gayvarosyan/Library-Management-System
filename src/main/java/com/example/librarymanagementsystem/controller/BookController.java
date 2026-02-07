@@ -1,10 +1,8 @@
 package com.example.librarymanagementsystem.controller;
 
 import com.example.librarymanagementsystem.model.Book;
-import com.example.librarymanagementsystem.model.Category;
-import com.example.librarymanagementsystem.repository.BookRepository;
-import com.example.librarymanagementsystem.repository.CategoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.librarymanagementsystem.service.BookService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,60 +11,36 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
-import java.util.List;
-
 @Controller
 @RequestMapping("/books")
+@RequiredArgsConstructor
 public class BookController {
-    
-    @Autowired
-    private BookRepository bookRepository;
-    
-    @Autowired
-    private CategoryRepository categoryRepository;
+
+    private final BookService bookService;
     
     @GetMapping
     public String listBooks(@RequestParam(required = false) Long categoryId,
                            @RequestParam(required = false) String search,
                            Model model) {
-        List<Book> books;
-        
-        if (categoryId != null && categoryId > 0) {
-            books = bookRepository.findByCategoryId(categoryId);
-        } else if (search != null && !search.isEmpty()) {
-            books = bookRepository.findByTitleContainingIgnoreCase(search);
-        } else {
-            books = bookRepository.findAll();
-        }
-        
-        model.addAttribute("books", books);
-        model.addAttribute("categories", categoryRepository.findAll());
-        model.addAttribute("selectedCategoryId", categoryId != null ? categoryId : 0);
-        model.addAttribute("searchQuery", search != null ? search : "");
-        
+        model.addAllAttributes(bookService.getListBooksModel(categoryId, search));
         return "books";
     }
     
     @GetMapping("/add")
     public String showAddBookForm(Model model) {
-        model.addAttribute("book", new Book());
-        model.addAttribute("categories", categoryRepository.findAll());
+        model.addAllAttributes(bookService.getAddBookFormModel());
         return "add-book";
     }
     
     @PostMapping("/add")
     public String addBook(@ModelAttribute Book book, @RequestParam Long categoryId) {
-        Category category = categoryRepository.findById(categoryId)
-            .orElseThrow(() -> new RuntimeException("Category not found"));
-        book.setCategory(category);
-        bookRepository.save(book);
+        bookService.saveBook(book, categoryId);
         return "redirect:/books";
     }
     
     @GetMapping("/delete")
     public String deleteBook(@RequestParam Long id) {
-        bookRepository.deleteById(id);
+        bookService.deleteBook(id);
         return "redirect:/books";
     }
 }
